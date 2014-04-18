@@ -1,7 +1,7 @@
 /*
- * StBukkitLib
+ * StBukkitLib - Set of useful Bukkit-related classes
  * Copyright (C) 2014 Stealth2800 <stealth2800@stealthyone.com>
- * Website: <http://stealthyone.com/bukkit>
+ * Website: <http://stealthyone.com.com/bukkit>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,9 @@ package com.stealthyone.mcb.stbukkitlib.lib.utils;
 
 import org.apache.commons.lang.Validate;
 
-public class TimeUtils {
+public final class TimeUtils {
+
+    private TimeUtils() { }
 
     public static enum TimeFormat {
 
@@ -75,13 +77,13 @@ public class TimeUtils {
                 returnString.append(Integer.toString(hours).length() == 1 ? "0" : "" + hours);
             }
 
-            if (hours > 0) {
-                returnString.append(":").append(Integer.toString(minutes).length() == 1 ? "0" : "").append(minutes);
-            } else {
-                returnString.append(minutes);
-            }
+            if (hours > 0)
+                returnString.append(":");
+            returnString.append(Integer.toString(minutes).length() == 1 ? "0" : "" + minutes);
 
-            returnString.append(":").append(Integer.toString(seconds).length() == 1 ? "0" : "").append(seconds);
+            if (minutes > 0)
+                returnString.append(":");
+            returnString.append(Integer.toString(seconds).length() == 1 ? "0" : "" + seconds);
         }
 
         return returnString.toString();

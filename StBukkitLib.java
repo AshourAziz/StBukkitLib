@@ -41,6 +41,8 @@ public class StBukkitLib extends JavaPlugin {
     public void onEnable() {
         idManager = new PlayerUuidManager(this);
 
+        getCommand("stbukkitlib").setExecutor(new CmdStbl(this));
+
         LogHelper.INFO(this, String.format("%s v%s by %s enabled.", getName(), getDescription().getVersion(), getDescription().getAuthors().toString()));
     }
 

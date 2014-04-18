@@ -1,1 +1,3 @@
 Debug: false
+Stbl:
+  Autosave interval: 10

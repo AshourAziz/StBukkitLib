@@ -1,0 +1,3 @@
+commandResults:
+  NO_PERMISSION: '&cYou do not have permission to use this command.'
+  UNKNOWN_COMMAND: '&cUnknown command.'
