@@ -1,4 +1,4 @@
-package com.stealthyone.mcb.stbukkitlib.lib.logging;
+package com.stealthyone.mcb.stbukkitlib.logging;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

@@ -1,7 +1,7 @@
-package com.stealthyone.mcb.stbukkitlib.lib.messages;
+package com.stealthyone.mcb.stbukkitlib.messages;
 
-import com.stealthyone.mcb.stbukkitlib.lib.logging.LogHelper;
-import com.stealthyone.mcb.stbukkitlib.lib.storage.YamlFileManager;
+import com.stealthyone.mcb.stbukkitlib.logging.LogHelper;
+import com.stealthyone.mcb.stbukkitlib.storage.YamlFileManager;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,15 +19,12 @@ public class MessageManager {
 
     private YamlFileManager messageFile;
 
+    private Map<String, String> tags = new HashMap<>();
     // Message category, <Message name, Message object>
     private Map<String, Map<String, Message>> loadedMessages = new HashMap<>();
 
     public MessageManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        messageFile = new YamlFileManager(plugin.getDataFolder() + File.separator + "messages.yml");
-        if (messageFile.isEmpty()) {
-            plugin.saveResource("messages.yml", true);
-        }
     }
 
     public JavaPlugin getOwner() {
@@ -35,6 +32,14 @@ public class MessageManager {
     }
 
     public void reloadMessages() {
+        if (messageFile == null) {
+            messageFile = new YamlFileManager(plugin.getDataFolder() + File.separator + "messages.yml");
+        }
+
+        if (messageFile.isEmpty()) {
+            plugin.saveResource("messages.yml", true);
+        }
+
         loadedMessages.clear();
         messageFile.reloadConfig();
 
@@ -42,16 +47,26 @@ public class MessageManager {
 
         // Go through each message category in the message file.
         for (String category : config.getKeys(false)) {
+            if (category.equals("tag")) {
+                tags.put("default", category);
+                continue;
+            }
+
             Map<String, Message> messages = new HashMap<>();
 
             //Load each individual message in the category.
             for (String msgName : config.getConfigurationSection(category).getKeys(false)) {
+                if (msgName.equals("tag")) {
+                    tags.put(category, config.getString(category + "." + msgName));
+                    continue;
+                }
+
                 Message newMsg;
                 try {
                     newMsg = new Message(this, config.getConfigurationSection(category), msgName);
                 } catch (Exception ex) {
                     //An error occurred when trying to create the message object, log and continue
-                    LogHelper.severe(plugin, "An error occurred while trying to load message '" + msgName + "' in category '" + category + "' in messages.yml for " + plugin.getName());
+                    LogHelper.warning(plugin, "An error occurred while trying to load message '" + msgName + "' in category '" + category + "' in messages.yml for " + plugin.getName());
                     ex.printStackTrace();
                     continue;
                 }
@@ -74,16 +89,18 @@ public class MessageManager {
     public Message getMessage(String messagePath) {
         Validate.notNull(messagePath, "Message path cannot be null.");
 
-        String[] pathSplit = messagePath.split(".");
-        if (pathSplit.length == 1) {
+        String[] pathSplit = messagePath.split("\\.");
+        if (pathSplit.length != 2) {
             throw new IllegalArgumentException("Invalid message path format '" + messagePath + "'");
         }
-        StringBuilder path = new StringBuilder();
-        String messageName = pathSplit[pathSplit.length - 1];
-        for (int i = 0; i < pathSplit.length - 1; i++) {
-            path.append(pathSplit[i]);
+
+        Message message;
+        try {
+            message = loadedMessages.get(pathSplit[0]).get(pathSplit[1]);
+        } catch (Exception ex) {
+            message = null;
         }
-        return loadedMessages.get(path.toString()).get(messageName);
+        return message == null ? createNullMessage(messagePath) : message;
     }
 
     /**
@@ -96,6 +113,22 @@ public class MessageManager {
     public Message getMessage(MessagePath messagePath) {
         Validate.notNull(messagePath, "Message path cannot be null.");
         return getMessage(messagePath.getPath());
+    }
+
+    private Message createNullMessage(String messageName) {
+        return new DummyMessage(String.format("{TAG}&4Undefined message '&c%s&4'", messageName));
+    }
+
+    protected String getTag(Message message) {
+        return getTag(message.getCategory());
+    }
+
+    protected String getTag(String category) {
+        String categoryTag = tags.get(category.toLowerCase());
+
+        String finalTag = categoryTag == null ? tags.get("default") : categoryTag;
+        finalTag = finalTag.replace("{PLUGIN}", plugin.getName());
+        return finalTag;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.stealthyone.mcb.stbukkitlib.lib.messages;
+package com.stealthyone.mcb.stbukkitlib.messages;
 
 /**
  * Another way of retrieving messages. Can potentially be useful for enumerators.

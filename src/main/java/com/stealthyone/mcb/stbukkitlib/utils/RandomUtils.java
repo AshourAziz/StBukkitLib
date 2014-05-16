@@ -1,4 +1,4 @@
-package com.stealthyone.mcb.stbukkitlib.lib.utils;
+package com.stealthyone.mcb.stbukkitlib.utils;
 
 import java.util.Random;
 
