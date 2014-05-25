@@ -20,6 +20,10 @@ public class Message {
     private List<String> messages = new ArrayList<>();
 
     Message(MessageManager messageManager, ConfigurationSection section, String name) {
+        if (this instanceof DummyMessage) {
+            return;
+        }
+
         this.messageManager = messageManager;
         category = section.getName();
         Object obj = section.get(name);
