@@ -48,7 +48,7 @@ public class MessageManager {
         // Go through each message category in the message file.
         for (String category : config.getKeys(false)) {
             if (category.equals("tag")) {
-                tags.put("default", category);
+                tags.put("default", config.getString(category));
                 continue;
             }
 
@@ -73,6 +73,10 @@ public class MessageManager {
                 messages.put(msgName.toLowerCase(), newMsg);
             }
             loadedMessages.put(category.toLowerCase(), messages);
+        }
+
+        if (!tags.containsKey("default")) {
+            tags.put("default", "[{PLUGIN}]");
         }
     }
 
