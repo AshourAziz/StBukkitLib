@@ -8,6 +8,7 @@ import java.util.HashMap;
  * @param <K> The type of keys for the HashMap.
  * @param <V> The type of values for the HashMap.
  */
+@Deprecated
 public class QuickHashMap<K, V> {
 
     private HashMap<K, V> map;
