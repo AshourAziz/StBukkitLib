@@ -2,7 +2,7 @@ package com.stealthyone.mcb.stbukkitlib.help;
 
 import com.stealthyone.mcb.stbukkitlib.storage.YamlFileManager;
 import com.stealthyone.mcb.stbukkitlib.utils.MiscUtils;
-import com.stealthyone.mcb.stbukkitlib.utils.QuickHashMap;
+import com.stealthyone.mcb.stbukkitlib.utils.QuickMap;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -62,29 +63,27 @@ public class HelpManager {
     }
 
     public void handleHelpCommand(String base, CommandSender sender, String label, String command, String[] args) {
-        /*
-         * 1) Get the base section.
-         * 2) Check the arguments. If the first argument is a number, assume it's a page and go from there.
-         *    If the first argument is not a page, attempt to go to that help topic.
-         */
+        handleHelpCommand(base, sender, label, command, args, null);
+    }
 
+    public void handleHelpCommand(String base, CommandSender sender, String label, String command, String[] args, Map<String, String> replacements) {
         int startIndex = 0;
 
         if (command != null) {
             startIndex = command.split(" ").length;
         }
 
-        helpCommand(startIndex, base, sender, label, command, args);
+        helpCommand(startIndex, base, sender, label, command, args, replacements != null ? replacements : new HashMap<String, String>());
     }
 
-    private void helpCommand(int curIndex, String base, CommandSender sender, String label, String command, String[] args) {
+    private void helpCommand(int curIndex, String base, CommandSender sender, String label, String command, String[] args, Map<String, String> replacements) {
         int page = 1;
 
         try {
             page = Integer.parseInt(args[curIndex]);
         } catch (NumberFormatException ex) {
             if (curIndex < args.length) {
-                helpCommand(curIndex + 1, base, sender, label, command == null ? base : command + (base == null ? "" : (" " + base)), args);
+                helpCommand(curIndex + 1, base, sender, label, command == null ? base : command + (base == null ? "" : (" " + base)), args, replacements);
                 return;
             }
         } catch (IndexOutOfBoundsException ex) { }
@@ -94,7 +93,6 @@ public class HelpManager {
             helpSection = homeSection;
         } else {
             String[] baseSplit = base.split("\\.");
-            System.out.println("split length: " + baseSplit.length);
             HelpSection secIteration = homeSection;
             for (String string : baseSplit) {
                 try {
@@ -116,18 +114,10 @@ public class HelpManager {
         }
 
         List<String> messages = helpSection.getMessages();
-        System.out.println("Message count: " + messages.size());
-        System.out.println("Messages: " + messages.toString());
-        System.out.println("Items per page: " + helpSection.getItemsPerPage());
 
         int pageCount = MiscUtils.getPageCount(messages.size(), helpSection.getItemsPerPage());
 
-        System.out.println("helpSection path: " + helpSection.getPath());
-        System.out.println("helpSection path: " + helpSection.getPath().replace("\\.", "/"));
-        System.out.println("helpSection path: " + helpSection.getPath().replace(".", "/"));
-        System.out.println("helpSection path: " + helpSection.getPath().replace(".", "\\/"));
-
-        Map<String, String> titleReplacements = new QuickHashMap<String, String>()
+        Map<String, String> titleReplacements = new QuickMap<String, String>()
             .put("{TOPIC}", helpSection.getName() == null || helpSection.getName().equals("") ? tag : helpSection.getName())
             .put("{PATH}", helpSection.getPath() == null || helpSection.getPath().equals("") ? tag : helpSection.getPath().replace("\\.", "/"))
             .put("{PLUGIN}", tag)
@@ -165,9 +155,16 @@ public class HelpManager {
         for (int i = 0; i < helpSection.getItemsPerPage(); i++) {
             int index = i + ((page - 1) * helpSection.getItemsPerPage());
             try {
-                formattedMessages.add(ChatColor.translateAlternateColorCodes('&', messages.get(index)));
+                String curMessage = messages.get(index);
+                for (Entry<String, String> replacement : replacements.entrySet()) {
+                    String key = replacement.getKey();
+                    String value = replacement.getValue();
+                    if (curMessage.contains(key)) {
+                        curMessage = curMessage.replace(key, value);
+                    }
+                }
+                formattedMessages.add(ChatColor.translateAlternateColorCodes('&', curMessage));
             } catch (IndexOutOfBoundsException ex) {
-                System.out.println("Index out of bounds");
                 if (i == 0) {
                     formattedMessages.add(ChatColor.translateAlternateColorCodes('&', msgInvalidPage));
                 }
