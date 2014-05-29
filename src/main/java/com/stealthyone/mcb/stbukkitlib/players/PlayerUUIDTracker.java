@@ -2,7 +2,11 @@ package com.stealthyone.mcb.stbukkitlib.players;
 
 import com.stealthyone.mcb.stbukkitlib.storage.YamlFileManager;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -23,11 +27,17 @@ public class PlayerUUIDTracker {
     public PlayerUUIDTracker(JavaPlugin plugin) {
         this.plugin = plugin;
         uuidFile = new YamlFileManager(plugin.getDataFolder() + File.separator + "playerUuids.yml");
+        createListener();
     }
 
     public PlayerUUIDTracker(JavaPlugin plugin, File file) {
         this.plugin = plugin;
         uuidFile = new YamlFileManager(file);
+        createListener();
+    }
+
+    private void createListener() {
+        Bukkit.getPluginManager().registerEvents(new PlayerUUIDListener(), plugin);
     }
 
     public void save() {
@@ -63,6 +73,18 @@ public class PlayerUUIDTracker {
     public String getName(UUID uuid) {
         Validate.notNull(uuid, "UUID cannot be null.");
         return uuidsToNames.get(uuid);
+    }
+
+    public class PlayerUUIDListener implements Listener {
+
+        @EventHandler
+        public void onPlayerJoin(PlayerJoinEvent e) {
+            UUID uuid = e.getPlayer().getUniqueId();
+            String name = e.getPlayer().getName();
+            uuidsToNames.put(uuid, name);
+            namesToUuids.put(name.toLowerCase(), uuid);
+        }
+
     }
 
 }
