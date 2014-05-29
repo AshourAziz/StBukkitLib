@@ -20,11 +20,11 @@ public class Message {
     private List<String> messages = new ArrayList<>();
 
     Message(MessageManager messageManager, ConfigurationSection section, String name) {
+        this.messageManager = messageManager;
         if (this instanceof DummyMessage) {
             return;
         }
 
-        this.messageManager = messageManager;
         category = section.getName();
         Object obj = section.get(name);
         if (obj instanceof String) {

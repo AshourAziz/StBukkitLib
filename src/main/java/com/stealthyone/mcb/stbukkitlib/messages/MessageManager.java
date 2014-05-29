@@ -4,9 +4,11 @@ import com.stealthyone.mcb.stbukkitlib.logging.LogHelper;
 import com.stealthyone.mcb.stbukkitlib.storage.YamlFileManager;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,7 @@ public class MessageManager {
         if (messageFile.isEmpty()) {
             plugin.saveResource("messages.yml", true);
         }
+        messageFile.copyDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml"))));
 
         loadedMessages.clear();
         messageFile.reloadConfig();
@@ -76,7 +79,7 @@ public class MessageManager {
         }
 
         if (!tags.containsKey("default")) {
-            tags.put("default", "[{PLUGIN}]");
+            tags.put("default", "&f[&6{PLUGIN}&f] ");
         }
     }
 
@@ -120,10 +123,13 @@ public class MessageManager {
     }
 
     private Message createNullMessage(String messageName) {
-        return new DummyMessage(String.format("{TAG}&4Undefined message '&c%s&4'", messageName));
+        return new DummyMessage(this, String.format("{TAG}&4Undefined message '&c%s&4'", messageName));
     }
 
     protected String getTag(Message message) {
+        if (message instanceof DummyMessage) {
+            return getTag("default");
+        }
         return getTag(message.getCategory());
     }
 
