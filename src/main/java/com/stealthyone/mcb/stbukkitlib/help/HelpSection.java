@@ -13,12 +13,7 @@ public class HelpSection {
     private Map<String, HelpSection> children = new LinkedHashMap<>();
 
     private HelpOptions options;
-
-    protected String header;
-    protected String footer;
-    protected String title;
-    protected String pageNotice;
-    protected int itemsPerPage;
+    private HelpFormat format;
 
     private List<String> messages;
 
@@ -35,18 +30,12 @@ public class HelpSection {
     }
 
     protected void load(ConfigurationSection config) {
-        options = new HelpOptions(this, config);
-
-        /* Load format */
-        ConfigurationSection formatSec = config.getConfigurationSection("format");
-        if (formatSec == null) {
-            formatSec = config.createSection("format");
+        if (this instanceof DefaultHelpSection) {
+            format = new DefaultHelpFormat();
+            return;
         }
-        header = formatSec.getString("header");
-        footer = formatSec.getString("footer");
-        title = formatSec.getString("title");
-        pageNotice = formatSec.getString("pageNotice");
-        itemsPerPage = formatSec.getInt("itemsPerPage", -1);
+        format = new HelpFormat(this, config);
+        options = new HelpOptions(this, config);
 
         /* Load messages */
         messages = new ArrayList<>(config.getStringList("messages"));
@@ -78,22 +67,27 @@ public class HelpSection {
     }
 
     public String getHeader() {
+        String header = format.header;
         return header != null ? header : parent.getHeader();
     }
 
     public String getFooter() {
+        String footer = format.footer;
         return footer != null ? footer : parent.getFooter();
     }
 
     public String getTitle() {
+        String title = format.title;
         return title != null ? title : parent.getTitle();
     }
 
     public String getPageNotice() {
+        String pageNotice = format.pageNotice;
         return pageNotice != null ? pageNotice : parent.getPageNotice();
     }
 
     public int getItemsPerPage() {
+        int itemsPerPage = format.itemsPerPage;
         return itemsPerPage != -1 ? itemsPerPage : parent.getItemsPerPage();
     }
 
