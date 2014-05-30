@@ -189,6 +189,14 @@ public class HelpManager {
                 formattedMessages.add(ChatColor.translateAlternateColorCodes('&', string));
             }
         }
+        if (page < pageCount) {
+            String pageNotice = helpSection.getPageNotice();
+            formattedMessages.add(ChatColor.translateAlternateColorCodes('&', pageNotice
+                .replace("{NEXTPAGE}", Integer.toString(page + 1)))
+                .replace("{COMMAND}", command == null ? "" : " " + command + " ")
+                .replace("{LABEL}", label)
+            );
+        }
 
         sender.sendMessage(formattedMessages.toArray(new String[formattedMessages.size()]));
     }
