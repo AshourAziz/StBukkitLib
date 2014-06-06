@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <groupId>com.stealthyone.mcb</groupId>
     <artifactId>stbukkitlib</artifactId>
     <version>3.0-SNAPSHOT</version>
     <name>StBukkitLib</name>
     <url>http://stealthyone.com/bukkit</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <repositories>
         <repository>
@@ -30,15 +30,20 @@
         </dependency>
     </dependencies>
 
-    <scm>
-        <connection>scm:git:ssh://git@github.com:Stealth2800/StBukkitLib.git</connection>
-        <url>scm:git:ssh://git@github.com:Stealth2800/StBukkitLib.git</url>
-        <developerConnection>scm:git:ssh://git@github.com:Stealth2800/StBukkitLib.git</developerConnection>
-    </scm>
+    <distributionManagement>
+        <repository>
+            <id>stealthyone-releases</id>
+            <url>http://repo.stealthyone.com/content/repositories/releases/</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>stealthyone-snapshots</id>
+            <url>http://repo.stealthyone.com/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
-        <finalName>${project.name} v${project.version}</finalName>
 
         <resources>
             <resource>
