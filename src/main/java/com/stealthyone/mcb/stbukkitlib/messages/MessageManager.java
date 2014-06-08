@@ -37,14 +37,15 @@ public class MessageManager {
         if (messageFile == null) {
             messageFile = new YamlFileManager(plugin.getDataFolder() + File.separator + "messages.yml");
         }
+        messageFile.reloadConfig();
 
         if (messageFile.isEmpty()) {
             plugin.saveResource("messages.yml", true);
         }
         messageFile.copyDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml"))));
 
+        tags.clear();
         loadedMessages.clear();
-        messageFile.reloadConfig();
 
         FileConfiguration config = messageFile.getConfig();
 

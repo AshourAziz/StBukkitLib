@@ -21,10 +21,10 @@ public class HelpManager {
     private String tag;
     private YamlFileManager helpFile;
 
-    private final String msgInvalidPageDef = "&c&lNothing here.";
+    private final String msgInvalidPageDef = "&c&oNothing here.";
     private String msgInvalidPage;
 
-    private final String msgNoDescriptionDef = "&cNo description set.";
+    private final String msgNoDescriptionDef = "&c&oNo description set.";
     private String msgNoDescription;
 
     private final String msgSectionInfoDef = "&8Section: {SECTION} - {SECDESC}";
@@ -115,23 +115,24 @@ public class HelpManager {
 
         List<String> messages = helpSection.getMessages();
 
-        int pageCount = MiscUtils.getPageCount(messages.size(), helpSection.getItemsPerPage());
+        int pageCount = MiscUtils.getPageCount(messages.size(), helpSection.format.getItemsPerPage());
 
-        Map<String, String> titleReplacements = new QuickMap<String, String>()
-            .put("{TOPIC}", helpSection.getName() == null || helpSection.getName().equals("") ? tag : helpSection.getName())
+        replacements.putAll(new QuickMap<String, String>()
+            .put("{TITLE}", helpSection.getName() == null || helpSection.getName().equals("") ? tag : helpSection.getName())
             .put("{PATH}", helpSection.getPath() == null || helpSection.getPath().equals("") ? tag : helpSection.getPath().replace("\\.", "/"))
             .put("{PLUGIN}", tag)
             .put("{PAGE}", Integer.toString(page))
             .put("{MAXPAGES}", Integer.toString(pageCount))
             .put("{LABEL}", label)
             .put("{COMMAND}", command == null ? "" : " " + command + " ")
-            .build();
+            .build()
+        );
 
-        String header = helpSection.getHeader();
-        String footer = helpSection.getFooter();
-        String title = helpSection.getTitle();
+        String header = helpSection.format.getHeader();
+        String footer = helpSection.format.getFooter();
+        String title = helpSection.format.getTitle();
 
-        for (Entry<String, String> replacement : titleReplacements.entrySet()) {
+        for (Entry<String, String> replacement : replacements.entrySet()) {
             String key = replacement.getKey();
             String value = replacement.getValue();
             if (header != null && !header.equals("") && header.contains(key)) {
@@ -152,8 +153,8 @@ public class HelpManager {
         if (title != null && !title.equals("")) {
             formattedMessages.add(ChatColor.translateAlternateColorCodes('&', title));
         }
-        for (int i = 0; i < helpSection.getItemsPerPage(); i++) {
-            int index = i + ((page - 1) * helpSection.getItemsPerPage());
+        for (int i = 0; i < helpSection.format.getItemsPerPage(); i++) {
+            int index = i + ((page - 1) * helpSection.format.getItemsPerPage());
             try {
                 String curMessage = messages.get(index);
                 for (Entry<String, String> replacement : replacements.entrySet()) {
@@ -190,7 +191,7 @@ public class HelpManager {
             }
         }
         if (page < pageCount) {
-            String pageNotice = helpSection.getPageNotice();
+            String pageNotice = helpSection.format.getPageNotice();
             formattedMessages.add(ChatColor.translateAlternateColorCodes('&', pageNotice
                 .replace("{NEXTPAGE}", Integer.toString(page + 1)))
                 .replace("{COMMAND}", command == null ? "" : " " + command + " ")

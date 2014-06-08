@@ -12,6 +12,4 @@ public class DefaultHelpFormat extends HelpFormat {
         itemsPerPage = 8;
     }
 
-
-
 }

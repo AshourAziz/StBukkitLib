@@ -14,6 +14,9 @@ public class HelpFormat {
 
     public HelpFormat(HelpSection helpSection, ConfigurationSection config) {
         this.helpSection = helpSection;
+        if (isDefaultSec()) {
+            return;
+        }
 
         ConfigurationSection formatSec = config.getConfigurationSection("format");
         if (formatSec != null) {
@@ -25,24 +28,48 @@ public class HelpFormat {
         }
     }
 
+    private boolean isDefaultSec() {
+        return this instanceof DefaultHelpFormat;
+    }
+
     public String getHeader() {
-        return header;
+        String rheader = this.header;
+        if (!isDefaultSec()) {
+            rheader = helpSection.getParent().format.getHeader();
+        }
+        return rheader;
     }
 
     public String getFooter() {
-        return footer;
+        String rfooter = this.footer;
+        if (!isDefaultSec()) {
+            rfooter = helpSection.getParent().format.getFooter();
+        }
+        return rfooter;
     }
 
     public String getTitle() {
-        return title;
+        String rtitle = this.title;
+        if (!isDefaultSec()) {
+            rtitle = helpSection.getParent().format.getTitle();
+        }
+        return rtitle;
     }
 
     public String getPageNotice() {
-        return pageNotice;
+        String rpageNotice = this.pageNotice;
+        if (!isDefaultSec()) {
+            rpageNotice = helpSection.getParent().format.getPageNotice();
+        }
+        return rpageNotice;
     }
 
     public int getItemsPerPage() {
-        return itemsPerPage;
+        int ritems = this.itemsPerPage;
+        if (!isDefaultSec()) {
+            ritems = helpSection.getParent().format.getItemsPerPage();
+        }
+        return ritems;
     }
 
 }

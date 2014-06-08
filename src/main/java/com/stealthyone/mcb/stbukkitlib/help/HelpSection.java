@@ -13,7 +13,7 @@ public class HelpSection {
     private Map<String, HelpSection> children = new LinkedHashMap<>();
 
     private HelpOptions options;
-    private HelpFormat format;
+    protected HelpFormat format;
 
     private List<String> messages;
 
@@ -64,31 +64,6 @@ public class HelpSection {
 
     public HelpOptions getOptions() {
         return options;
-    }
-
-    public String getHeader() {
-        String header = format.header;
-        return header != null ? header : parent.getHeader();
-    }
-
-    public String getFooter() {
-        String footer = format.footer;
-        return footer != null ? footer : parent.getFooter();
-    }
-
-    public String getTitle() {
-        String title = format.title;
-        return title != null ? title : parent.getTitle();
-    }
-
-    public String getPageNotice() {
-        String pageNotice = format.pageNotice;
-        return pageNotice != null ? pageNotice : parent.getPageNotice();
-    }
-
-    public int getItemsPerPage() {
-        int itemsPerPage = format.itemsPerPage;
-        return itemsPerPage != -1 ? itemsPerPage : parent.getItemsPerPage();
     }
 
     public List<String> getMessages() {
