@@ -27,4 +27,14 @@ public class StringUtils {
         return sb.toString();
     }
 
+    public static boolean containsMultipleIgnoreCase(String input, String... values) {
+        input = input.toLowerCase();
+        for (String current : values) {
+            if (input.contains(current.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
