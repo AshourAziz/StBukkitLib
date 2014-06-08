@@ -27,7 +27,7 @@ public class HelpManager {
     private final String msgNoDescriptionDef = "&c&oNo description set.";
     private String msgNoDescription;
 
-    private final String msgSectionInfoDef = "&8Section: {SECTION} - {SECDESC}";
+    private final String msgSectionInfoDef = "&8Section: &6{SECTION} &8- &6{SECDESC}";
     private String msgSectionInfo;
 
     private final String msgUnknownSectionDef = "&cUnknown help section: &4{SECTION}&c.";
@@ -83,11 +83,12 @@ public class HelpManager {
             page = Integer.parseInt(args[curIndex]);
         } catch (NumberFormatException ex) {
             if (curIndex < args.length) {
-                helpCommand(curIndex + 1, base, sender, label, command == null ? base : command + (base == null ? "" : (" " + base)), args, replacements);
+                helpCommand(curIndex + 1, args[curIndex], sender, label, command == null ? base : command + (base == null ? "" : (" " + base)), args, replacements);
                 return;
             }
         } catch (IndexOutOfBoundsException ex) { }
 
+        // 1. Get the proper help section
         HelpSection helpSection;
         if (base == null) {
             helpSection = homeSection;
@@ -95,16 +96,20 @@ public class HelpManager {
             String[] baseSplit = base.split("\\.");
             HelpSection secIteration = homeSection;
             for (String string : baseSplit) {
-                try {
-                    secIteration = secIteration.getChild(string);
-                } catch (NullPointerException ex) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', msgUnknownSection.replace("{SECTION}", base == null ? "(none)" : base)));
-                    return;
+                if (secIteration == null) {
+                    break;
                 }
+                secIteration = secIteration.getChild(string);
             }
             helpSection = secIteration;
         }
 
+        if (helpSection == null) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', msgUnknownSection.replace("{SECTION}", base == null ? "(none)" : base)));
+            return;
+        }
+
+        // 2. Permission check
         String perm = helpSection.getOptions().getPermission();
         if (perm != null && !perm.equals("")) {
             if (!sender.hasPermission(perm)) {
@@ -113,7 +118,24 @@ public class HelpManager {
             }
         }
 
-        List<String> messages = helpSection.getMessages();
+        // 3. Create messages
+        List<String> messages = new ArrayList<>(helpSection.getMessages());
+
+        // 3.1. Add subsection messages
+        if (!msgSectionInfo.equals("")) {
+            List<String> subSections = new ArrayList<>();
+            for (HelpSection child : helpSection.getChildren()) {
+                String description = child.getOptions().getDescription();
+                if (description == null || description.equals("")) {
+                    description = msgNoDescription;
+                }
+                subSections.add(msgSectionInfo.replace("{SECTION}", child.getName()).replace("{SECDESC}", description));
+            }
+
+            for (String string : subSections) {
+                messages.add(ChatColor.translateAlternateColorCodes('&', string));
+            }
+        }
 
         int pageCount = MiscUtils.getPageCount(messages.size(), helpSection.format.getItemsPerPage());
 
@@ -172,24 +194,11 @@ public class HelpManager {
                 break;
             }
         }
+
         if (footer != null && !footer.equals("")) {
             formattedMessages.add(ChatColor.translateAlternateColorCodes('&', footer));
         }
 
-        if (!msgSectionInfo.equals("")) {
-            List<String> subSections = new ArrayList<>();
-            for (HelpSection child : helpSection.getChildren()) {
-                String description = child.getOptions().getDescription();
-                if (description == null || description.equals("")) {
-                    description = msgNoDescription;
-                }
-                subSections.add(msgSectionInfo.replace("{SECTION}", child.getName()).replace("{SECDESC}", description));
-            }
-
-            for (String string : subSections) {
-                formattedMessages.add(ChatColor.translateAlternateColorCodes('&', string));
-            }
-        }
         if (page < pageCount) {
             String pageNotice = helpSection.format.getPageNotice();
             formattedMessages.add(ChatColor.translateAlternateColorCodes('&', pageNotice
