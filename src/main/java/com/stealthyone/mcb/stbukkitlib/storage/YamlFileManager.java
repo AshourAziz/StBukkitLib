@@ -68,6 +68,10 @@ public class YamlFileManager {
         }
     }
 
+    public String getName() {
+        return file.getName();
+    }
+
     public FileConfiguration getConfig() {
         return config;
     }
