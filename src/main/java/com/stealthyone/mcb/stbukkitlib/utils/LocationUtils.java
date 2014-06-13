@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Some utility classes for the Bukkit Location class.
+ * Utility methods for the Bukkit Location class.
  */
 public final class LocationUtils {
 
