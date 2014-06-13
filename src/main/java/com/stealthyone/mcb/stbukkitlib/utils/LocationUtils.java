@@ -78,7 +78,6 @@ public final class LocationUtils {
      */
     public static List<Location> stringListToLocationList(List<String> stringList) {
         Validate.notNull(stringList, "String list cannot be null.");
-        Validate.notEmpty(stringList, "String list cannot be empty.");
 
         List<Location> locations = new ArrayList<>();
         for (String string : stringList) {
@@ -99,6 +98,8 @@ public final class LocationUtils {
      * @return New list with the converted locations.
      */
     public static List<String> locationListToStringList(List<Location> locationList) {
+        Validate.notNull(locationList, "Location list cannot be null.");
+
         List<String> strings = new ArrayList<>();
         for (Location location : locationList) {
             if (location == null) continue;
