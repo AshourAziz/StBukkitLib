@@ -6,7 +6,7 @@
 
     <groupId>com.stealthyone.mcb</groupId>
     <artifactId>stbukkitlib</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>StBukkitLib</name>
     <url>http://stealthyone.com/bukkit</url>
 
