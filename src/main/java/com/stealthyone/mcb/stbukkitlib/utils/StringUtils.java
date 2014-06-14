@@ -23,7 +23,7 @@ import org.apache.commons.lang.Validate;
 import java.util.List;
 
 /**
- * Utility classes for Java's String class.
+ * Utility methods for Java's String class.
  */
 public final class StringUtils {
 
