@@ -4,6 +4,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class HelpOptions {
 
+    private final String permMessageDef = "&cYou do not have permission for this help section.";
+
     private HelpSection helpSection;
 
     private String description;
@@ -32,7 +34,7 @@ public class HelpOptions {
     }
 
     public String getPermMessage() {
-        return permMessage != null ? permMessage : (!inherit ? null : helpSection.getParent().getOptions().getPermMessage());
+        return permMessage != null ? permMessage : (!inherit ? permMessageDef : helpSection.getParent().getOptions().getPermMessage());
     }
 
     public boolean doInherit() {
