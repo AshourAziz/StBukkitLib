@@ -9,6 +9,7 @@ public class Autosaver implements Runnable {
     private Autosavable autosavable;
 
     public Autosaver(JavaPlugin plugin, Autosavable autosavable, int minutes) {
+        this.autosavable = autosavable;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, minutes * 1200L, minutes * 1200L);
     }
 
