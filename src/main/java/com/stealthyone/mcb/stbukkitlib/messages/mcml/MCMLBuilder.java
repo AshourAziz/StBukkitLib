@@ -28,6 +28,9 @@ public class MCMLBuilder {
         char[] inputChars = inputText.toCharArray();
 
         curPart = new MCMLTempPart();
+        int lastTextIndex = -1;
+
+        mainLoop:
         for (int i = 0; i < inputChars.length; i++) {
             if (inputChars[i] == '[') {
                 // Click event?
@@ -47,9 +50,7 @@ public class MCMLBuilder {
                         curPart.clickEvent = clickEvent;
                         i = j;
 
-                        if (curPart.getText() != null) {
-                            advanceCurPart();
-                        }
+                        continue mainLoop;
                     }
                 }
             } else if (inputChars[i] == '(') {
@@ -70,14 +71,17 @@ public class MCMLBuilder {
                         curPart.hoverEvent = hoverEvent;
                         i = j;
 
-                        if (curPart.getText() != null) {
-                            advanceCurPart();
-                        }
+                        continue mainLoop;
                     }
                 }
             } else if (inputChars[i] != '&') {
                 // Character is not an ampersand, add to text
+                if (lastTextIndex != -1 && lastTextIndex != i - 1) {
+                    // There was some sort of break between text, end this section
+                    advanceCurPart();
+                }
                 curPart.chars.add(inputChars[i]);
+                lastTextIndex = i;
                 continue;
             }
 
@@ -96,6 +100,7 @@ public class MCMLBuilder {
                 continue;
             }
             checkChatColor(chatColor);
+            lastTextIndex = -1;
             i++;
         }
         parts.add(curPart);
@@ -108,6 +113,12 @@ public class MCMLBuilder {
 
     private void checkChatColor(ChatColor chatColor) {
         // Valid chat color, now is it a format or color?
+        if (curPart.getText() != null) {
+            ChatColor oldColor = curPart.color;
+            advanceCurPart();
+            curPart.color = oldColor;
+        }
+
         if (chatColor.isColor()) {
             // It is a color
             if (curPart.color != null) {
