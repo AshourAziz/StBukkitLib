@@ -12,7 +12,7 @@ class MCMLHoverEventAchievement extends MCMLHoverEvent {
         if (rawText.length() == 6) {
             throw new IllegalArgumentException("Achievement hover event must have input.");
         }
-        achievement = rawText.substring(5, rawText.length());
+        achievement = rawText.substring(5, rawText.length() - 1);
     }
 
     @Override

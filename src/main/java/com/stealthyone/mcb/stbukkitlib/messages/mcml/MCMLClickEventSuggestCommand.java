@@ -12,7 +12,7 @@ class MCMLClickEventSuggestCommand extends MCMLClickEvent {
         if (rawText.length() == 7) {
             throw new IllegalArgumentException("Suggest command click event must have input.");
         }
-        command = rawText.substring(5, rawText.length());
+        command = rawText.substring(6, rawText.length() - 1);
     }
 
     @Override

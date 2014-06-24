@@ -37,32 +37,42 @@ public class MCMLBuilder {
                         // Found the end
                         MCMLClickEvent clickEvent;
                         try {
-                            clickEvent = MCMLClickEvent.parseText(this, inputText.substring(i + 1, j));
+                            clickEvent = MCMLClickEvent.parseText(this, inputText.substring(i, j + 1));
                         } catch (Exception ex) {
                             // Not valid syntax
+                            ex.printStackTrace();
                             break;
                         }
 
                         curPart.clickEvent = clickEvent;
                         i = j;
+
+                        if (curPart.getText() != null) {
+                            advanceCurPart();
+                        }
                     }
                 }
             } else if (inputChars[i] == '(') {
                 // Hover event?
                 // Try to find the end
                 for (int j = i; j < inputChars.length; j++) {
-                    if (inputChars[j] == ']') {
+                    if (inputChars[j] == ')') {
                         // Found the end
                         MCMLHoverEvent hoverEvent;
                         try {
-                            hoverEvent = MCMLHoverEvent.parseText(this, inputText.substring(i + 1, j));
+                            hoverEvent = MCMLHoverEvent.parseText(this, inputText.substring(i, j + 1));
                         } catch (Exception ex) {
                             // Not valid syntax
+                            ex.printStackTrace();
                             break;
                         }
 
                         curPart.hoverEvent = hoverEvent;
                         i = j;
+
+                        if (curPart.getText() != null) {
+                            advanceCurPart();
+                        }
                     }
                 }
             } else if (inputChars[i] != '&') {
@@ -86,7 +96,9 @@ public class MCMLBuilder {
                 continue;
             }
             checkChatColor(chatColor);
+            i++;
         }
+        parts.add(curPart);
     }
 
     private void advanceCurPart() {
@@ -98,13 +110,11 @@ public class MCMLBuilder {
         // Valid chat color, now is it a format or color?
         if (chatColor.isColor()) {
             // It is a color
-            if (curPart.color == null) {
-                // The current part doesn't have a color set, so lets set it
-                curPart.color = chatColor;
-            } else {
+            if (curPart.color != null) {
                 // The current part already has a color, create a new part
                 advanceCurPart();
             }
+            curPart.color = chatColor;
         } else {
             // Not a color code, must be a formatting code
             switch (chatColor) {
@@ -162,7 +172,7 @@ public class MCMLBuilder {
 
         boolean started = false;
         for (MCMLTempPart part : parts) {
-            if (part.getText() != null) {
+            if (part.getText() == null) {
                 // No text = invalid
                 continue;
             }

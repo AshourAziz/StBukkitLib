@@ -7,7 +7,7 @@ abstract class MCMLHoverEvent {
 
     public static MCMLHoverEvent parseText(MCMLBuilder builder, String rawText) {
         Validate.notNull(rawText, "Raw text cannot be null.");
-        if (!rawText.matches("\\[(ach|itm|txt):(.+)\\]")) {
+        if (!rawText.matches("\\((ach|itm|txt):(.+)\\)")) {
             throw new IllegalArgumentException("Invalid hover event syntax: '" + rawText + "'");
         }
 

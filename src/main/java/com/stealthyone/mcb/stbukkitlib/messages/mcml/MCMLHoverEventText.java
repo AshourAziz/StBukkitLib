@@ -12,7 +12,7 @@ class MCMLHoverEventText extends MCMLHoverEvent {
         if (rawText.length() == 6) {
             throw new IllegalArgumentException("Text hover event must have input.");
         }
-        text = rawText.substring(5, rawText.length());
+        text = rawText.substring(5, rawText.length() - 1);
     }
 
     @Override

@@ -13,15 +13,14 @@ abstract class MCMLClickEvent {
 
         switch (rawText.substring(1, 4)) {
             case "cmd":
-                return new MCMLClickEventSuggestCommand(rawText);
+                return new MCMLClickEventCommand(rawText);
 
             case "url":
                 return new MCMLClickEventURL(rawText);
 
-            case "scmd":
+            default:
                 return new MCMLClickEventSuggestCommand(rawText);
         }
-        return null;
     }
 
     public abstract void buildOn(FancyMessage message);

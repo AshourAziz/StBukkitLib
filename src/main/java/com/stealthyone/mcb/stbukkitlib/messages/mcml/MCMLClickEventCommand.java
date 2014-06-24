@@ -12,7 +12,7 @@ class MCMLClickEventCommand extends MCMLClickEvent {
         if (rawText.length() == 6) {
             throw new IllegalArgumentException("Command click event must have input.");
         }
-        command = rawText.substring(5, rawText.length());
+        command = rawText.substring(5, rawText.length() - 1);
     }
 
     @Override

@@ -13,7 +13,7 @@ class MCMLHoverEventItem extends MCMLHoverEvent {
         if (rawText.length() == 6) {
             throw new IllegalArgumentException("Item hover event must have input.");
         }
-        String key = rawText.substring(5, rawText.length());
+        String key = rawText.substring(5, rawText.length() - 1);
         Object item = builder.getReplacement(key);
         if (item == null || !(item instanceof ItemStack)) {
             throw new IllegalArgumentException("No replacement item found with key '" + key + "'");
