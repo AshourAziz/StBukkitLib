@@ -119,6 +119,11 @@
                                     <pattern>mkremins.fanciful</pattern>
                                     <shadedPattern>${project.groupId}.${project.artifactId}.shade.fanciful</shadedPattern>
                                 </relocation>
+
+                                <relocation>
+                                    <pattern>net.amoebaman.util</pattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.shade.amoebamanutil</shadedPattern>
+                                </relocation>
                             </relocations>
 
                             <artifactSet>
