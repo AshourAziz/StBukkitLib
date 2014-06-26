@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public class MessageManager {
         if (messageFile.isEmpty()) {
             plugin.saveResource("messages.yml", true);
         }
-        messageFile.copyDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml"))));
+        messageFile.copyDefaults(YamlConfiguration.loadConfiguration(plugin.getResource("messages.yml")));
 
         tags.clear();
         loadedMessages.clear();
