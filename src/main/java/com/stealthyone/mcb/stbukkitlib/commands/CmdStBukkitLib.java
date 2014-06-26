@@ -1,8 +1,8 @@
 package com.stealthyone.mcb.stbukkitlib.commands;
 
+import com.stealthyone.mcb.mcml.MCMLBuilder;
 import com.stealthyone.mcb.stbukkitlib.StBukkitLib;
 import com.stealthyone.mcb.stbukkitlib.logging.LogHelper;
-import com.stealthyone.mcb.stbukkitlib.messages.mcml.MCMLBuilder;
 import com.stealthyone.mcb.stbukkitlib.utils.ArrayUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
