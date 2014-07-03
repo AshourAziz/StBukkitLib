@@ -58,7 +58,7 @@ public class AdvancedMessage {
             if (finalMsg.contains("{TAG}")) {
                 finalMsg = finalMsg.replace("{TAG}", messageManager.getTag(this));
             }
-            returnList.add(new MCMLBuilder(msg).buildFancyMessage());
+            returnList.add(new MCMLBuilder(finalMsg).buildFancyMessage());
         }
         return returnList;
     }
