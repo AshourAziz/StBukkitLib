@@ -30,6 +30,11 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public</url>
         </repository>
+
+        <repository>
+            <id>stealthyone.repo</id>
+            <url>http://repo.stealthyone.com/content/groups/public</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -38,6 +43,12 @@
             <artifactId>craftbukkit</artifactId>
             <version>1.7.9-R0.2-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.stealthyone.mcb</groupId>
+            <artifactId>mcml</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -79,6 +90,37 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.stealthyone.mcb.mcml</pattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.shade.mcml</shadedPattern>
+                                </relocation>
+                            </relocations>
+
+                            <artifactSet>
+                                <includes>
+                                    <include>com.stealthyone.mcb:mcml</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
