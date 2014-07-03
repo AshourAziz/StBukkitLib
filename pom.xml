@@ -6,7 +6,7 @@
 
     <groupId>com.stealthyone.mcb</groupId>
     <artifactId>stbukkitlib</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
     <name>StBukkitLib</name>
     <url>http://stealthyone.com/bukkit</url>
 
@@ -32,8 +32,8 @@
         </repository>
 
         <repository>
-            <id>fanciful-repo</id>
-            <url>https://raw.github.com/mkremins/fanciful/mvn-repo/</url>
+            <id>stealthyone.repo</id>
+            <url>http://repo.stealthyone.com/content/groups/public</url>
         </repository>
     </repositories>
 
@@ -46,22 +46,9 @@
         </dependency>
 
         <dependency>
-            <groupId>mkremins</groupId>
-            <artifactId>fanciful</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>craftbukkit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
             <groupId>com.stealthyone.mcb</groupId>
             <artifactId>mcml</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.2.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -98,11 +85,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>2.0.2</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
@@ -122,16 +108,6 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
-                                    <pattern>mkremins.fanciful</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.shade.fanciful</shadedPattern>
-                                </relocation>
-
-                                <relocation>
-                                    <pattern>net.amoebaman.util</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.shade.amoebamanutil</shadedPattern>
-                                </relocation>
-
-                                <relocation>
                                     <pattern>com.stealthyone.mcb.mcml</pattern>
                                     <shadedPattern>${project.groupId}.${project.artifactId}.shade.mcml</shadedPattern>
                                 </relocation>
@@ -139,7 +115,6 @@
 
                             <artifactSet>
                                 <includes>
-                                    <include>mkremins:fanciful</include>
                                     <include>com.stealthyone.mcb:mcml</include>
                                 </includes>
                             </artifactSet>
@@ -151,12 +126,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.1</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
                 </configuration>
