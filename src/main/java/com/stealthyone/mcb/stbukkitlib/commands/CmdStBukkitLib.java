@@ -43,7 +43,8 @@ public class CmdStBukkitLib implements CommandExecutor {
         String text = ArrayUtils.stringArrayToString(args, 1);
         LogHelper.debug(plugin, "RAWTEXT: " + text);
         MCMLBuilder builder = new MCMLBuilder(text);
-        builder.buildFancyMessage().send((Player) sender);
+        sender.sendMessage(builder.buildNormalMessage(true, true));
+        builder.buildFancyMessage().send(sender);
     }
 
 }
