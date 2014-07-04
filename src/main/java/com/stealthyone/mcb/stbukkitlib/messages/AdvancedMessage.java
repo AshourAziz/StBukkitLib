@@ -1,7 +1,7 @@
 package com.stealthyone.mcb.stbukkitlib.messages;
 
 import com.stealthyone.mcb.mcml.MCMLBuilder;
-import mkremins.fanciful.FancyMessage;
+import com.stealthyone.mcb.mcml.shade.fanciful.FancyMessage;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,6 +46,48 @@ public class AdvancedMessage {
     }
 
     /**
+     * Returns the raw MCML builders.
+     * TODO: Add a better way of sending messages that contain replacements for the MCML builder itself.
+     *
+     * @return The newly created builders.
+     */
+    public List<MCMLBuilder> getBuilderMessages() {
+        List<MCMLBuilder> returnList = new ArrayList<>();
+        for (String msg : messages) {
+            if (msg == null || msg.equals("")) continue;
+            String finalMsg = msg;
+            if (finalMsg.contains("{TAG}")) {
+                finalMsg = finalMsg.replace("{TAG}", messageManager.getTag(this));
+            }
+            returnList.add(new MCMLBuilder(finalMsg));
+        }
+        return returnList;
+    }
+
+    /**
+     * Returns the raw MCML builders.
+     *
+     * @param replacements The replacements to insert to the messages.
+     * @return The newly created builders.
+     */
+    public List<MCMLBuilder> getBuilderMessages(Map<String, String> replacements) {
+        List<MCMLBuilder> returnList = new ArrayList<>();
+        for (String msg : messages) {
+            if (msg == null || msg.equals("")) continue;
+            String finalMsg = msg;
+            if (finalMsg.contains("{TAG}")) {
+                finalMsg = finalMsg.replace("{TAG}", messageManager.getTag(this));
+            }
+            for (Entry<String, String> replacement : replacements.entrySet()) {
+                if (!finalMsg.contains(replacement.getKey())) continue;
+                finalMsg = finalMsg.replace(replacement.getKey(), replacement.getValue());
+            }
+            returnList.add(new MCMLBuilder(finalMsg));
+        }
+        return returnList;
+    }
+
+    /**
      * Returns the messages that would be sent to a player.
      *
      * @return An array of the formatted messages.
@@ -58,7 +100,7 @@ public class AdvancedMessage {
             if (finalMsg.contains("{TAG}")) {
                 finalMsg = finalMsg.replace("{TAG}", messageManager.getTag(this));
             }
-            returnList.add(new MCMLBuilder(msg).buildFancyMessage());
+            returnList.add(new MCMLBuilder(finalMsg).buildFancyMessage());
         }
         return returnList;
     }

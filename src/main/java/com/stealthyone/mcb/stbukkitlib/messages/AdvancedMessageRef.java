@@ -27,4 +27,11 @@ public class AdvancedMessageRef implements MessagePath {
         messageManager.getMessage(this).sendTo(sender, replacements);
     }
 
+    public AdvancedMessage getFormattedMessages() {
+        return messageManager.getMessage(this);
+    }
+
+    public AdvancedMessage getFormattedMessages(Map<String, String> replacements) {
+        return messageManager.getMessage(this)
+    }
 }
