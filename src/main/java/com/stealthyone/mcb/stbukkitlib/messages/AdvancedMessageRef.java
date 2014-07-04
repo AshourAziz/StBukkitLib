@@ -31,7 +31,4 @@ public class AdvancedMessageRef implements MessagePath {
         return messageManager.getMessage(this);
     }
 
-    public AdvancedMessage getFormattedMessages(Map<String, String> replacements) {
-        return messageManager.getMessage(this)
-    }
 }
