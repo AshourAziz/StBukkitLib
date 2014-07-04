@@ -110,6 +110,10 @@ public class AdvancedMessageManager {
         return tag.replace("{PLUGIN}", owner.getName());
     }
 
+    public AdvancedMessage getMessage(MessagePath messagePath) {
+        return getMessage(messagePath.getPath());
+    }
+
     public AdvancedMessage getMessage(String path) {
         String[] pathSplit = path.split("\\.");
         if (pathSplit.length != 2) {
