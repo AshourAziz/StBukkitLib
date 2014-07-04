@@ -58,7 +58,8 @@ public class AdvancedMessage {
             if (finalMsg.contains("{TAG}")) {
                 finalMsg = finalMsg.replace("{TAG}", messageManager.getTag(this));
             }
-            returnList.add(new MCMLBuilder(finalMsg).buildFancyMessage());
+            FancyMessage testMsg = new MCMLBuilder(finalMsg).buildFancyMessage();
+            returnList.add(testMsg);
         }
         return returnList;
     }
@@ -80,7 +81,8 @@ public class AdvancedMessage {
                 if (!finalMsg.contains(replacement.getKey())) continue;
                 finalMsg = finalMsg.replace(replacement.getKey(), replacement.getValue());
             }
-            returnList.add(new MCMLBuilder(finalMsg).buildFancyMessage());
+            FancyMessage testMsg = new MCMLBuilder(finalMsg).buildFancyMessage();
+            returnList.add(testMsg);
         }
         return returnList;
     }

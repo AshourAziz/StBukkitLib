@@ -111,6 +111,16 @@
                                     <pattern>com.stealthyone.mcb.mcml</pattern>
                                     <shadedPattern>${project.groupId}.${project.artifactId}.shade.mcml</shadedPattern>
                                 </relocation>
+
+                                <relocation>
+                                    <pattern>mkremins.fanciful</pattern>
+                                    <shadedPattern>com.stealthyone.mcb.mcml.shade.fanciful</shadedPattern>
+                                </relocation>
+
+                                <relocation>
+                                    <pattern>net.amoebaman.util</pattern>
+                                    <shadedPattern>com.stealthyone.mcb.mcml.shade.amoebamanutil</shadedPattern>
+                                </relocation>
                             </relocations>
 
                             <artifactSet>
