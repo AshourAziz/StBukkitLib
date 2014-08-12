@@ -12,9 +12,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:craftbukkit:1.7.9-R0.2-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="MCMarkupLanguage" />
+    <orderEntry type="library" name="Maven: com.stealthyone.mcb:mcml:1.2.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: mkremins:fanciful:0.2.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.7.9-R0.1" level="project" />
   </component>
 </module>
 

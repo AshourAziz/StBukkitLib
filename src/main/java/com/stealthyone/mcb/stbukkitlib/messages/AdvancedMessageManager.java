@@ -4,15 +4,17 @@ import com.stealthyone.mcb.stbukkitlib.logging.LogHelper;
 import com.stealthyone.mcb.stbukkitlib.storage.YamlFileManager;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An upgraded version of {@link com.stealthyone.mcb.stbukkitlib.messages.MessageManager} that uses <a href="https://github.com/Stealth2800/MCMarkupLanguage">MCML</a> for
- * more advanced messages.
+ * An upgraded version of {@link com.stealthyone.mcb.stbukkitlib.messages.MessageManager} that uses
+ * <a href="https://github.com/Stealth2800/MCMarkupLanguage">MCML</a> for more advanced messages.
  */
 public class AdvancedMessageManager {
 
@@ -68,6 +70,13 @@ public class AdvancedMessageManager {
         tags.clear();
         loadedMessages.clear();
 
+        if (messageFile.isEmpty()) {
+            owner.saveResource(messageFile.getName(), true);
+        }
+        messageFile.copyDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(owner.getResource("messages.yml"))));
+        messageFile.saveFile();
+
+        messageFile.reloadConfig();
         FileConfiguration config = messageFile.getConfig();
 
         for (String category : config.getKeys(false)) {

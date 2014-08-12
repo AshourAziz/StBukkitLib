@@ -65,11 +65,32 @@ public final class StringUtils {
     }
 
     /**
+     * Checks if the input string contains any of the values, case sensitive.
+     *
+     * @param input Input string.
+     * @param values List of values to check.
+     * @return True if any of the values exist in the input string.<br />
+     *         False if none of the values exist in the input string.
+     */
+    public static boolean containsMultiple(String input, String... values) {
+        Validate.notNull(input, "Input cannot be null.");
+        Validate.notNull(values, "Values cannot be null.");
+        Validate.notEmpty(values, "Values cannot be empty.");
+
+        for (String str : values) {
+            if (input.contains(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Checks if the input string contains any of the values.
      *
      * @param input Input string.
      * @param values List of values to check.
-     * @return True if any of the values exist in the input string.
+     * @return True if any of the values exist in the input string.<br />
      *         False if none of the values exist in the input string.
      */
     public static boolean containsMultipleIgnoreCase(String input, String... values) {
