@@ -1,10 +1,10 @@
 name: ${project.name}
 version: ${project.version}
-description: Library of useful classes for Bukkit plugin development purposes
+description: Testing plugin for StBukkitLib
 depend: []
 softdepend: []
 author: Stealth2800
-website: http://stealthyone.com/bukkit
+website: http://stealthyone.com/
 main: com.stealthyone.mcb.stbukkitlib.StBukkitLib
 commands:
   stbukkitlib:
