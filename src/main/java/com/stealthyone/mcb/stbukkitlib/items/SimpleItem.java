@@ -34,6 +34,15 @@ public class SimpleItem {
     private Map<Enchantment, Integer> enchantments = new HashMap<>();
 
     /**
+     * Creates an item from a material.
+     *
+     * @param material Material type for the item.
+     */
+    public SimpleItem(@NonNull Material material) {
+        this.material = material;
+    }
+
+    /**
      * Creates an item from a string.<br />
      * Format: ITEM_NAME:DAMAGE -amt=INTEGER -name=STRING -lore=STRING,STRING -enchants=NAME:LEVEL,NAME:LEVEL<br />
      * Spaces in the name and lore sections can be done by putting an underscore (_).  If you want to include an underscore, escape it with \ (\_)<br />
@@ -102,6 +111,81 @@ public class SimpleItem {
             }
             enchantments.put(enchant, level);
         }
+    }
+
+    /**
+     * Sets the damage (durability) of the item.
+     *
+     * @param damage The damage to set.<br />
+     *               If < 0, will automatically be set to 0.
+     * @return The SimpleItem instance, for chaining.
+     */
+    public SimpleItem damage(short damage) {
+        if (damage < 0) {
+            this.damage = 0;
+        } else {
+            this.damage = damage;
+        }
+        return this;
+    }
+
+    /**
+     * Sets the amount of the item.
+     *
+     * @param amount The amount to set.<br />
+     *               If <= 0, will automatically be set to 1.
+     * @return The SimpleItem instance, for chaining.
+     */
+    public SimpleItem amount(int amount) {
+        if (amount <= 0) {
+            this.amount = 1;
+        } else {
+            this.amount = amount;
+        }
+        return this;
+    }
+
+    /**
+     * Sets the display name of the item.
+     *
+     * @param displayName The display name to set.<br />
+     *                    Null to remove the display name.
+     * @return The SimpleItem instance, for chaining.
+     */
+    public SimpleItem displayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Sets the lore of the item.
+     *
+     * @param lore The lore to set.<br />
+     *             Null to remove the lore.
+     * @return The SimpleItem instance, for chaining.
+     */
+    public SimpleItem lore(List<String> lore) {
+        this.lore = lore;
+        if (this.lore != null && this.lore.isEmpty()) {
+            this.lore = null;
+        }
+        return this;
+    }
+
+    /**
+     * Sets the enchantments on the item.
+     *
+     * @param enchants The enchants to set.<br />
+     *                 Null or an empty map to remove the enchants.
+     * @return The SimpleItem instance, for chaining.
+     */
+    public SimpleItem enchants(Map<Enchantment, Integer> enchants) {
+        this.enchantments.clear();
+        if (enchants != null && !enchants.isEmpty()) {
+            enchantments.putAll(enchants);
+        }
+
+        return this;
     }
 
     /**
