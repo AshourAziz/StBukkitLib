@@ -43,6 +43,44 @@ public class SimpleItem {
     }
 
     /**
+     * Creates an item from a material and specified damage amount.
+     *
+     * @param material Material type for the item.
+     * @param damage Damage value for the item.
+     */
+    public SimpleItem(@NonNull Material material, short damage) {
+        this.material = material;
+        damage(damage);
+    }
+
+    /**
+     * Creates an item from an existing Bukkit ItemStack.
+     *
+     * @param itemStack ItemStack to create this SimpleItem from.
+     */
+    public SimpleItem(@NonNull ItemStack itemStack) {
+        material = itemStack.getType();
+        amount = itemStack.getAmount();
+        damage = itemStack.getDurability();
+
+        if (itemStack.hasItemMeta()) {
+            ItemMeta meta = itemStack.getItemMeta();
+
+            if (meta.hasDisplayName()) {
+                displayName(meta.getDisplayName());
+            }
+
+            if (meta.hasLore()) {
+                lore(meta.getLore());
+            }
+
+            if (meta.hasEnchants()) {
+                enchants(meta.getEnchants());
+            }
+        }
+    }
+
+    /**
      * Creates an item from a string.<br />
      * Format: ITEM_NAME:DAMAGE -amt=INTEGER -name=STRING -lore=STRING,STRING -enchants=NAME:LEVEL,NAME:LEVEL<br />
      * Spaces in the name and lore sections can be done by putting an underscore (_).  If you want to include an underscore, escape it with \ (\_)<br />
