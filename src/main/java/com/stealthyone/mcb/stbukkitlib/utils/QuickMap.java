@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class QuickMap<K, V> {
 
-    private Map<K, V> map;
+    protected final Map<K, V> map;
 
     /**
      * Constructs a new QuickMap using an empty HashMap.
@@ -43,6 +43,11 @@ public class QuickMap<K, V> {
 
     public QuickMap<K, V> put(K key, V value) {
         map.put(key, value);
+        return this;
+    }
+
+    public QuickMap<K, V> putAll(Map<K, V> values) {
+        map.putAll(values);
         return this;
     }
 
