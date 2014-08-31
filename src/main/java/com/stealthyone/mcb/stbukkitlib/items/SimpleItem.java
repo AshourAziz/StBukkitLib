@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +79,21 @@ public class SimpleItem {
                 enchants(meta.getEnchants());
             }
         }
+    }
+
+    /**
+     * Creates an item from an existing SimpleItem instance.
+     *
+     * @param simpleItem The other SimpleItem instance to use.
+     */
+    public SimpleItem(@NonNull SimpleItem simpleItem) {
+        this.material = simpleItem.material;
+        this.damage = simpleItem.damage;
+        this.amount = simpleItem.amount;
+
+        this.displayName = simpleItem.displayName;
+        this.lore = simpleItem.lore == null ? null : new ArrayList<>(simpleItem.lore);
+        this.enchantments = new HashMap<>(simpleItem.enchantments);
     }
 
     /**
@@ -152,6 +168,15 @@ public class SimpleItem {
     }
 
     /**
+     * Returns the damage (durability) set for the item.
+     *
+     * @return Damage value of the item.
+     */
+    public short getDamage() {
+        return damage;
+    }
+
+    /**
      * Sets the damage (durability) of the item.
      *
      * @param damage The damage to set.<br />
@@ -165,6 +190,15 @@ public class SimpleItem {
             this.damage = damage;
         }
         return this;
+    }
+
+    /**
+     * Returns the amount set for the item.
+     *
+     * @return The amount of the resulting ItemStack, when created.
+     */
+    public int getAmount() {
+        return amount;
     }
 
     /**
@@ -184,6 +218,16 @@ public class SimpleItem {
     }
 
     /**
+     * Returns the display name that is set for the item.
+     *
+     * @return The display name set for the item.<br />
+     *         Null if there is no display name set.
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /**
      * Sets the display name of the item.
      *
      * @param displayName The display name to set.<br />
@@ -193,6 +237,16 @@ public class SimpleItem {
     public SimpleItem displayName(String displayName) {
         this.displayName = displayName;
         return this;
+    }
+
+    /**
+     * Returns the lore of the item.
+     *
+     * @return An unmodifiable view of the lore of the item.<br />
+     *         Null if no lore is set for the item.
+     */
+    public List<String> getLore() {
+        return lore == null ? null : Collections.unmodifiableList(lore);
     }
 
     /**
@@ -208,6 +262,16 @@ public class SimpleItem {
             this.lore = null;
         }
         return this;
+    }
+
+    /**
+     * Returns all of the enchantments that are set for the item.
+     *
+     * @return A read-only view of the item's enchantments.<br />
+     *         Null if there are no enchantments.
+     */
+    public Map<Enchantment, Integer> getEnchantments() {
+        return enchantments.isEmpty() ? null : Collections.unmodifiableMap(enchantments);
     }
 
     /**
