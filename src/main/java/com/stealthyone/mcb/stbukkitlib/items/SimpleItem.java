@@ -168,6 +168,26 @@ public class SimpleItem {
     }
 
     /**
+     * Returns the Material of the item.
+     *
+     * @return The Material set for the item.
+     */
+    public Material getMaterial() {
+        return material;
+    }
+
+    /**
+     * Sets the material of the item.
+     *
+     * @param material The material of the item.
+     * @return The SimpleItem instance, for chaining.
+     */
+    public SimpleItem material(@NonNull Material material) {
+        this.material = material;
+        return this;
+    }
+
+    /**
      * Returns the damage (durability) set for the item.
      *
      * @return Damage value of the item.
@@ -296,6 +316,10 @@ public class SimpleItem {
      * @return Newly created item.
      */
     public ItemStack getItem() {
+        if (material == null) {
+            throw new IllegalStateException("No material is set.");
+        }
+
         ItemStack item = new ItemStack(material, amount, damage);
 
         if (displayName != null || !lore.isEmpty() || !enchantments.isEmpty()) {
