@@ -31,10 +31,10 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public</url>
         </repository>
 
-        <repository>
-            <id>stealthyone.repo</id>
-            <url>http://repo.stealthyone.com/content/groups/public</url>
-        </repository>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
     </repositories>
 
     <dependencies>
